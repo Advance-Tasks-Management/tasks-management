@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  # 🌍 MongoDB Service (Database)
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    env_file:
+      - .env  # Load shared DB URI
+
+  # 🚀 API Gateway (First Entry Point)
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-service
+      - task-service
+      - comment-service
+      - team-service
+      - notification-service
+    env_file:
+      - .env
+      - ./api-gateway/.env
+
+  # 👤 User Service
+  user-service:
+    build: ./user-service
+    ports:
+      - "${USER_PORT}:${USER_PORT}"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+      - ./user-service/.env
+
+  # ✅ Task Service
+  task-service:
+    build: ./task-service
+    ports:
+      - "${TASK_PORT}:${TASK_PORT}"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+      - ./task-service/.env
+
+  # 💬 Comment Service
+  comment-service:
+    build: ./comment-service
+    ports:
+      - "${COMMENT_PORT}:${COMMENT_PORT}"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+      - ./comment-service/.env
+
+  # 👥 Team Service
+  team-service:
+    build: ./team-service
+    ports:
+      - "${TEAM_PORT}:${TEAM_PORT}"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+      - ./team-service/.env
+
+  # 🔔 Notification Service
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "${NOTIFICATION_PORT}:${NOTIFICATION_PORT}"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+      - ./notification-service/.env
+
+volumes:
+  mongo_data:
