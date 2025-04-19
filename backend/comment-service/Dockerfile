@@ -3,10 +3,12 @@ FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app  
+RUN npm install -g pnpm
 
 # Copy package.json files for dependency installation
-COPY package*.json ./  
-RUN npm install  
+COPY package*.json ./ 
+COPY pnpm-lock.yaml ./  
+RUN pnpm install  
 
 # Copy remaining files
 COPY . .  

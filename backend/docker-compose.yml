@@ -13,8 +13,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
-    env_file:
-      - .env  # Load shared DB URI
 
   # 🚀 API Gateway (First Entry Point)
   api-gateway:
@@ -27,9 +25,6 @@ services:
       - comment-service
       - team-service
       - notification-service
-    env_file:
-      - .env
-      - ./api-gateway/.env
 
   # 👤 User Service
   user-service:
@@ -38,9 +33,6 @@ services:
       - "${USER_PORT}:${USER_PORT}"
     depends_on:
       - mongodb
-    env_file:
-      - .env
-      - ./user-service/.env
 
   # ✅ Task Service
   task-service:
@@ -49,9 +41,6 @@ services:
       - "${TASK_PORT}:${TASK_PORT}"
     depends_on:
       - mongodb
-    env_file:
-      - .env
-      - ./task-service/.env
 
   # 💬 Comment Service
   comment-service:
@@ -60,9 +49,6 @@ services:
       - "${COMMENT_PORT}:${COMMENT_PORT}"
     depends_on:
       - mongodb
-    env_file:
-      - .env
-      - ./comment-service/.env
 
   # 👥 Team Service
   team-service:
@@ -71,9 +57,6 @@ services:
       - "${TEAM_PORT}:${TEAM_PORT}"
     depends_on:
       - mongodb
-    env_file:
-      - .env
-      - ./team-service/.env
 
   # 🔔 Notification Service
   notification-service:
@@ -82,9 +65,6 @@ services:
       - "${NOTIFICATION_PORT}:${NOTIFICATION_PORT}"
     depends_on:
       - mongodb
-    env_file:
-      - .env
-      - ./notification-service/.env
 
 volumes:
   mongo_data:

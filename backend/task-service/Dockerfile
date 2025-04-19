@@ -3,10 +3,12 @@ FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app  
+RUN npm install -g pnpm
 
 # Copy package files and install dependencies
 COPY package*.json ./  
-RUN npm install  
+COPY pnpm-lock.yaml ./
+RUN pnpm install  
 
 # Copy all files to the container
 COPY . .  
