@@ -3,12 +3,15 @@ FROM node:18-alpine
 
 # Set the working directory inside the container
 WORKDIR /app  
+RUN npm install -g pnpm
 
 # Copy package.json and package-lock.json to install dependencies first (caching optimization)
-COPY package*.json ./  
+COPY package*.json ./ 
+COPY pnpm-lock.yaml ./ 
+ 
 
 # Install dependencies
-RUN npm install  
+RUN pnpm install  
 
 # Copy the rest of the application files to the container
 COPY . .  
